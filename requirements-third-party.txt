@@ -8,4 +8,4 @@ pyOpenSSL==24.2.1
 requests==2.32.3
 setuptools
 six==1.17.0
-urllib3==2.3.0
+urllib3==2.6.1
