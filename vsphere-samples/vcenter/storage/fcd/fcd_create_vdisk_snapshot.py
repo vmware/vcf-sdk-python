@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2019-2025 Broadcom. All Rights Reserved.
+# The term "Broadcom" refers to Broadcom Inc.
+# and/or its subsidiaries.
+# SPDX-License-Identifier: Apache-2.0
+
+"""
+-*- coding: utf-8 -*-
+Written by Chris Arceneaux
+GitHub: https://github.com/carceneaux
+Email: carceneaux@thinksis.com
+Website: http://arsano.ninja
+
+Note: Example code For testing purposes only
+
+Python program for creating a snapshot of a first class disk (fcd)
+"""
+
+from helpers import cli, tasks, disk, pchelper, service_instance
+from pyVmomi import vmodl, vim
+
+
+def main():
+    """
+    Simple command-line program for creating a snapshot of a first class disk.
+    """
+
+    parser = cli.Parser()
+    parser.add_required_arguments(cli.Argument.DATASTORE_NAME, cli.Argument.FIRST_CLASS_DISK_NAME,
+                                  cli.Argument.SNAPSHOT_NAME)
+    args = parser.get_args()
+    si = service_instance.connect(args)
+
+    try:
+        content = si.RetrieveContent()
+
+        # Retrieve Datastore Object
+        datastore = pchelper.get_obj(content, [vim.Datastore], args.datastore_name)
+
+        # Retrieve FCD Object
+        vdisk = disk.retrieve_fcd(content, datastore, args.fcd_name)
+
+        # Create FCD Snapshot
+        storage = content.vStorageObjectManager
+        task = storage.VStorageObjectCreateSnapshot_Task(
+            vdisk.config.id, datastore, args.snapshot_name)
+        tasks.wait_for_tasks(si, [task])
+        print("FCD snapshot created!")
+
+    except vmodl.MethodFault as error:
+        print("Caught vmodl fault : " + error.msg)
+        return -1
+
+    return 0
+
+
+# Start program
+if __name__ == "__main__":
+    main()

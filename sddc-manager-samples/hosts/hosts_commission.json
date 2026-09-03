@@ -1,0 +1,68 @@
+{
+  "hosts_spec": [
+     {
+      "username": "root",
+      "password": "XXXX",
+      "storage_type": "VSAN",
+      "network_pool_name": "XXXX",
+      "network_pool_id": "XXXX",
+      "fqdn": "esxi-7.vrack.vsphere.local"
+    },
+    {
+      "username": "root",
+      "password": "XXXX",
+      "storage_type": "VSAN",
+      "network_pool_name": "XXXX",
+      "network_pool_id": "XXXX",
+      "fqdn": "esxi-8.vrack.vsphere.local"
+    },
+    {
+      "username": "root",
+      "password": "XXXX",
+      "storage_type": "VSAN",
+      "network_pool_name": "XXXX",
+      "network_pool_id": "XXXX",
+      "fqdn": "esxi-9.vrack.vsphere.local"
+    },
+    {
+      "username": "root",
+      "password": "XXXX",
+      "storage_type": "VSAN",
+      "network_pool_name": "XXXX",
+      "network_pool_id": "XXXX",
+      "fqdn": "esxi-10.vrack.vsphere.local"
+    },
+    {
+      "username": "root",
+      "password": "XXXX",
+      "storage_type": "VSAN",
+      "network_pool_name": "XXXX",
+      "network_pool_id": "XXXX",
+      "fqdn": "esxi-11.vrack.vsphere.local"
+    },
+    {
+      "username": "root",
+      "password": "XXXX",
+      "storage_type": "VSAN",
+      "network_pool_name": "XXXX",
+      "network_pool_id": "XXXX",
+      "fqdn": "esxi-12.vrack.vsphere.local"
+    },
+    {
+      "username": "root",
+      "password": "XXXX",
+      "storage_type": "VSAN",
+      "network_pool_name": "XXXX",
+      "network_pool_id": "XXXX",
+      "fqdn": "esxi-13.vrack.vsphere.local"
+    },
+    {
+      "username": "root",
+      "password": "XXXX",
+      "storage_type": "VSAN",
+      "network_pool_name": "XXXX",
+      "network_pool_id": "XXXX",
+      "fqdn": "esxi-14.vrack.vsphere.local"
+    }
+  ]
+}

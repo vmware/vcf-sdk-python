@@ -1,0 +1,20 @@
+{
+    "collectorId": "1",
+    "identifiers": {
+        "AUTODISCOVERY": "true",
+        "PROCESSCHANGEEVENTS": "true",
+        "VCURL": ""
+    },
+    "credentialConfig": {
+        "adapterKindKey": "VMWARE",
+        "credentialKindKey": "PRINCIPALCREDENTIAL",
+        "fields": {
+            "USER": "",
+            "PASSWORD": ""
+        }
+    },
+    "enableVSAN": false,
+    "smartDataCollection": false,
+    "enableSDMP": false,
+    "enableAutoDiscovery": false
+}

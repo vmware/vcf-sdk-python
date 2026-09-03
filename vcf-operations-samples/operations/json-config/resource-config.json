@@ -1,0 +1,12 @@
+{
+    "name": "FooBar",
+    "description": "Description",
+    "adapterKindKey":  "VMWARE",
+    "resourceKindKey":  "VirtualMachine",
+    "identifiers":  {
+        "VMEntityVCID": "40ee147c-69a6-4e80-a9fe-0e7bf7e35996",
+        "VMEntityObjectID": "vm-999",
+        "VMEntityName": "FooBar"
+    },
+    "pushAdapterKindKey": "SOME-PUSH-ADAPTER-KEY"
+}

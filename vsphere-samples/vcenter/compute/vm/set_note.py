@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2014-2025 Broadcom. All Rights Reserved.
+# The term "Broadcom" refers to Broadcom Inc.
+# and/or its subsidiaries.
+# Copyright 2014 Michael Rice
+# SPDX-License-Identifier: Apache-2.0
+
+"""
+Example for adding a VM note
+"""
+
+from pyVmomi import vim
+from helpers import cli, service_instance, tasks, pchelper
+
+
+parser = cli.Parser()
+parser.add_required_arguments(cli.Argument.MESSAGE)
+parser.add_optional_arguments(cli.Argument.UUID, cli.Argument.VM_NAME)
+args = parser.get_args()
+si = service_instance.connect(args)
+
+vm = None
+if args.uuid:
+    search_index = si.content.searchIndex
+    vm = search_index.FindByUuid(None, args.uuid, True)
+elif args.vm_name:
+    content = si.RetrieveContent()
+    vm = pchelper.get_obj(content, [vim.VirtualMachine], args.vm_name)
+
+if not vm:
+    raise SystemExit("Unable to locate VirtualMachine.")
+
+print("Found: {0}".format(vm.name))
+spec = vim.vm.ConfigSpec()
+spec.annotation = args.message
+task = vm.ReconfigVM_Task(spec)
+tasks.wait_for_tasks(si, [task])
+print("Done.")

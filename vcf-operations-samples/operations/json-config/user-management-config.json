@@ -1,0 +1,18 @@
+{
+    "userConfig": {
+        "firstname": "First",
+        "lastname": "Last",
+        "username": "username",
+        "password": "Password@123Password@123",
+        "email": "first.last@somedomain.com"
+    },
+    "userGroupConfig": {
+        "name": "Group name",
+        "description": "Group Description"
+    },
+    "userRoleConfig": {
+        "name": "Role name",
+        "description": "Role Description",
+        "privilegeKeys": ["ManageAlerts", "ManageAlarms", "ManageNotificationPlugins"]
+    }
+}

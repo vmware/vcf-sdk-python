@@ -1,0 +1,15 @@
+{
+    "identifiers": {
+        "SDDCManager_Hostname": ""
+    },
+    "credentialConfig": {
+        "adapterKindKey": "VcfAdapter",
+        "credentialKindKey": "VcfCredentials",
+        "fields": {
+            "USER": "",
+            "PASSWORD": ""
+        }
+    },
+    "force" : false,
+    "forceManagementOwnership": false
+}

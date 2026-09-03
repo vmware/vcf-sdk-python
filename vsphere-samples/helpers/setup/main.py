@@ -1,0 +1,126 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+# The term "Broadcom" refers to Broadcom Inc.
+# and/or its subsidiaries.
+# SPDX-License-Identifier: Apache-2.0
+
+"""
+Script that runs through all the setup and samples.
+"""
+
+
+import pyVim.connect
+from vmware.vapi.vsphere.client import create_vsphere_client
+
+from helpers.common import sample_util
+from helpers.setup import testbed
+from helpers.setup import setup_cli
+from helpers.setup.testbed_setup import cleanup as testbed_cleanup
+from helpers.setup.testbed_setup import setup as testbed_setup
+from helpers.setup.testbed_setup import validate as testbed_validate
+from vcenter.compute.vm.main import VMSetup
+from helpers.common.ssl_helper import get_unverified_context, \
+    get_unverified_session
+
+# Parse command line params for setup script
+args = setup_cli.build_arg_parser().parse_args()
+
+_testbed = testbed.get()
+
+# If VC/ESX/NFS Server IPs are passed as arguments,
+# then override testbed.py values
+if args.vcenterserver:
+    _testbed.config['SERVER'] = args.vcenterserver
+if args.vcenterpassword:
+    _testbed.config['PASSWORD'] = args.vcenterpassword
+if args.esxhost1:
+    _testbed.config['ESX1_HOST'] = args.esxhost1
+if args.esxhost2:
+    _testbed.config['ESX2_HOST'] = args.esxhost2
+if args.esxuser1:
+    _testbed.config['ESX1_USER'] = args.esxuser1
+if args.esxuser2:
+    _testbed.config['ESX2_USER'] = args.esxuser2
+if args.esxpassword1:
+    _testbed.config['ESX1_PWD'] = args.esxpassword1
+if args.esxpassword2:
+    _testbed.config['ESX2_PWD'] = args.esxpassword2
+if args.nfsserver:
+    _testbed.config['NFS_HOST'] = args.nfsserver
+
+
+print(_testbed.to_config_string())
+
+# Connect to VIM API Endpoint on vCenter system
+context = None
+if args.skipverification:
+    context = get_unverified_context()
+service_instance = pyVim.connect.SmartConnect(host=_testbed.config['SERVER'],
+                                              user=_testbed.config['USERNAME'],
+                                              pwd=_testbed.config['PASSWORD'],
+                                              sslContext=context)
+
+# Connect to vAPI Endpoint on vCenter system
+session = get_unverified_session() if args.skipverification else None
+client = create_vsphere_client(server=_testbed.config['SERVER'],
+                               username=_testbed.config['USERNAME'],
+                               password=_testbed.config['PASSWORD'],
+                               session=session)
+
+context = sample_util.Context(_testbed, service_instance, client)
+
+context.option['DO_TESTBED_SETUP'] = args.testbed_setup
+context.option['DO_TESTBED_VALIDATE'] = args.testbed_validate
+context.option['DO_TESTBED_CLEANUP'] = args.testbed_cleanup
+context.option['DO_TESTBED_ISO_CLEANUP'] = args.iso_cleanup
+context.option['DO_SAMPLES_SETUP'] = args.samples_setup
+context.option['DO_SAMPLES'] = args.samples
+context.option['DO_SAMPLES_INCREMENTAL'] = args.samples_incremental
+context.option['DO_SAMPLES_CLEANUP'] = args.samples_cleanup
+context.option['SKIP_VERIFICATION'] = args.skipverification
+print(context.to_option_string())
+
+###############################################################################
+# Testbed Setup
+###############################################################################
+
+vm_setup = VMSetup(context)
+
+# Setup testbed
+if context.option['DO_TESTBED_SETUP']:
+    # Clean up in case of past failures
+    vm_setup.cleanup()
+    testbed_cleanup(context)
+    testbed_setup(context)
+
+# Validate testbed
+if (context.option['DO_TESTBED_SETUP'] or
+        context.option['DO_TESTBED_VALIDATE'] or
+        context.option['DO_SAMPLES_SETUP'] or
+        context.option['DO_SAMPLES']):
+    if not testbed_validate(context):
+        exit(0)
+    print(context.testbed.to_entities_string())
+
+###############################################################################
+# Sample Run and Cleanup
+###############################################################################
+
+# Run Sample
+if context.option['DO_SAMPLES']:
+    vm_setup.setup(context)
+    vm_setup.run()
+
+# Cleanup after sample run
+if context.option['DO_SAMPLES_CLEANUP']:
+    vm_setup.cleanup()
+
+###############################################################################
+# Testbed Cleanup
+###############################################################################
+
+# Teardown testbed.
+if context.option['DO_TESTBED_CLEANUP']:
+    vm_setup.cleanup()
+    testbed_cleanup(context)

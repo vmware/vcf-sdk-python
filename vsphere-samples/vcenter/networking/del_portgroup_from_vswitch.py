@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2016-2025 Broadcom. All Rights Reserved.
+# The term "Broadcom" refers to Broadcom Inc.
+# and/or its subsidiaries.
+# SPDX-License-Identifier: Apache-2.0
+
+"""
+Written by nickcooper-zhangtonghao
+Github: https://github.com/nickcooper-zhangtonghao
+Email: nickcooper-zhangtonghao@opencloud.tech
+Note: Example code For testing purposes only
+"""
+import sys
+from pyVmomi import vim
+from helpers import service_instance, cli
+
+
+def get_vm_hosts(content):
+    host_view = content.viewManager.CreateContainerView(content.rootFolder,
+                                                        [vim.HostSystem],
+                                                        True)
+    hosts = list(host_view.view)
+    host_view.Destroy()
+    return hosts
+
+
+def del_hosts_portgroup(hosts, portgroup_name):
+    for host in hosts:
+        host.configManager.networkSystem.RemovePortGroup(portgroup_name)
+    return True
+
+
+def del_host_portgroup(host, portgroup_name):
+    host.configManager.networkSystem.RemovePortGroup(portgroup_name)
+
+
+def main():
+    parser = cli.Parser()
+    parser.add_required_arguments(cli.Argument.PORT_GROUP)
+    args = parser.get_args()
+    si = service_instance.connect(args)
+    content = si.RetrieveContent()
+
+    hosts = get_vm_hosts(content)
+    if del_hosts_portgroup(hosts, args.port_group):
+        print('Deleted Port Group')
+
+
+# Main section
+if __name__ == "__main__":
+    sys.exit(main())

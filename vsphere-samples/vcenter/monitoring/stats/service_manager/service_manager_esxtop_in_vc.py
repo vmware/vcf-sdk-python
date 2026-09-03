@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2017-2025 Broadcom. All Rights Reserved.
+# The term "Broadcom" refers to Broadcom Inc.
+# and/or its subsidiaries.
+# SPDX-License-Identifier: Apache-2.0
+
+from helpers import cli, service_instance
+
+"""
+Example of connecting to the ESXTOP service provided
+by vCenter Server's Service Manager
+"""
+
+__author__ = 'William Lam'
+
+
+# Start program
+def main():
+    parser = cli.Parser()
+    parser.add_optional_arguments(cli.Argument.ESX_IP)
+    args = parser.get_args()
+    si = service_instance.connect(args)
+
+    # "vmware.host." prefix is required when connecting to VC
+    location = "vmware.host." + args.esx_ip
+
+    services = si.content.serviceManager.QueryServiceList(
+        location=[location])
+
+    if services:
+        for service in services:
+            if service.serviceName == "Esxtop":
+                results = service.service.ExecuteSimpleCommand(
+                    arguments=["CounterInfo"])
+                print(results)
+    else:
+        print("Unable to retrieve the service list from \
+ESXi host. Pleaes ensure --esx_ip property is the FQDN or IP \
+Address of the managed ESXi host in your vCenter Server")
+
+
+# Start program
+if __name__ == "__main__":
+    main()

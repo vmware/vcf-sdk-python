@@ -1,0 +1,12 @@
+{
+  "cluster_compaction_spec": {
+    "force": false,
+    "force_by_passing_safe_min_size": false,
+    "hosts": [
+      {
+        "fqdn": "esxi-1.vrack.vsphere.local",
+        "id": "40c8e8de-7e6c-4663-93cf-4a979dc798ad"
+      }
+    ]
+  }
+}

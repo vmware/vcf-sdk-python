@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2008-2025 Broadcom. All Rights Reserved.
+# The term "Broadcom" refers to Broadcom Inc.
+# and/or its subsidiaries.
+# SPDX-License-Identifier: Apache-2.0
+
+"""
+A Python script for changing the name of an object. Demonstrates the use
+of tasks in an asynchronous way.
+"""
+
+import sys
+import time
+from pyVmomi import vim
+from helpers import cli, service_instance
+
+
+parser = cli.Parser()
+parser.add_required_arguments(cli.Argument.NAME)
+parser.add_optional_arguments(cli.Argument.NEW_NAME)
+args = parser.get_args()
+
+# form a connection...
+si = service_instance.connect(args)
+
+# search the whole inventory tree recursively... a brutish but effective tactic
+root_folder = si.content.rootFolder
+entity_stack = root_folder.childEntity
+name = args.name
+obj = None
+while entity_stack:
+    entity = entity_stack.pop()
+    if entity.name == name:
+        obj = entity
+        break
+    elif isinstance(entity, vim.Datacenter):
+        # add this vim.DataCenter's folders to our search
+        # we don't know the entity's type so we have to scan
+        # each potential folder...
+        entity_stack.append(entity.datastoreFolder)
+        entity_stack.append(entity.hostFolder)
+        entity_stack.append(entity.networkFolder)
+        entity_stack.append(entity.vmFolder)
+    elif isinstance(entity, vim.Folder):
+        # add all child entities from this folder to our search
+        entity_stack.extend(entity.childEntity)
+
+if obj is None:
+    print("A object named %s could not be found" % args.name)
+    sys.exit()
+
+if args.new_name:
+    new_name = args.new_name
+else:
+    # just because we want the script to do *something*
+    new_name = args.name + "0"
+
+print("\n")
+print("name        : %s" % obj.name)
+print("\n")
+print("    renaming from %s to %s" % (args.name, new_name))
+print("\n")
+
+# rename creates a task...
+task = obj.Rename(new_name)
+
+# Did you know that task objects in pyVmomi get updates automatically?
+# Check this out... it's not super efficient but here's how you could
+# have a script that looped waiting on a task but still had the
+# chance to periodically check other things or do other actions...
+print("rename task state:")
+count = 0
+state = task.info.state
+while task.info.state != vim.TaskInfo.State.success:
+    sys.stdout.write("\r\t" + str(time.time()) + "\t: " + task.info.state)
+    sys.stdout.flush()
+    count += 1
+
+print("\nrename finished\n")

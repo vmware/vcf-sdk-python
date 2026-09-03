@@ -1,0 +1,200 @@
+{
+  "domain_name": "wld1",
+  "org_name": "vcf",
+  "compute_spec": {
+    "cluster_specs": [
+      {
+        "name": "cluster",
+        "advanced_options": {
+          "high_availability": {"enabled": true}
+        },
+        "datastore_spec": {
+          "vsan_datastore_spec": {
+            "datastore_name": "wld-cluster-vsan01",
+            "failures_to_tolerate": 1,
+            "dedup_and_compression_enabled": false
+          }
+        },
+        "network_spec": {
+          "nsx_cluster_spec": {
+            "nsxt_cluster_spec": {
+              "uplink_profiles": [
+                {
+                  "name": "wld-cluster-vds-uplink-profile-1",
+                  "teamings": [
+                    {
+                      "policy": "LOADBALANCE_SRCID",
+                      "active_uplinks": ["uplink-1", "uplink-2"],
+                      "stand_by_uplinks": null
+                    }
+                  ],
+                  "transport_vlan": 0
+                }
+              ]
+            }
+          },
+          "vds_specs": [
+            {
+              "name": "wld-cluster-vds-01",
+              "mtu": 9000,
+              "port_group_specs": [
+                {
+                  "name": "wld-cluster-vds-01-pg-mgmt",
+                  "mtu": 1500,
+                  "transport_type": "MANAGEMENT",
+                  "active_uplinks": ["uplink1", "uplink2"],
+                  "teaming_policy": "loadbalance_loadbased"
+                },
+                {
+                  "name": "wld-cluster-vds-01-pg-vmotion",
+                  "mtu": 8940,
+                  "transport_type": "VMOTION",
+                  "active_uplinks": ["uplink1", "uplink2"],
+                  "teaming_policy": "loadbalance_loadbased"
+                },
+                {
+                  "name": "wld-cluster-vds-01-pg-vsan",
+                  "mtu": 8940,
+                  "transport_type": "VSAN",
+                  "active_uplinks": ["uplink1", "uplink2"],
+                  "teaming_policy": "loadbalance_loadbased"
+                }
+              ],
+              "nsxt_switch_config": {
+                "transport_zones": [
+                  {
+                    "name"         : "overlay-tz-vip-nsxtManager",
+                    "transport_type": "OVERLAY"
+                  }
+                ],
+                "host_switch_operational_mode": "ENS_INTERRUPT"
+              }
+            }
+          ],
+          "network_profiles": [
+            {
+              "name": "networkConfigProfile",
+              "is_default": true,
+              "nsxt_host_switch_configs": [
+                {
+                  "vds_name": "wld-cluster-vds-01",
+                  "uplink_profile_name": "wld-cluster-vds-uplink-profile-1",
+                  "vds_uplink_to_nsx_uplink": [
+                    {"vds_uplink_name": "uplink1", "nsx_uplink_name": "uplink-1"},
+                    {"vds_uplink_name": "uplink2", "nsx_uplink_name": "uplink-2"}
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "host_specs": [
+          {
+            "id": "ab83e8a6-cbed-4fb4-ba2e-533581282bb7",
+            "host_network_spec": {
+              "vm_nics": [
+                {
+                  "id"     : "vmnic0"            ,
+                  "uplink" : "uplink1"           ,
+                  "vds_name": "wld-cluster-vds-01"
+                },
+                {
+                  "id"     : "vmnic1"            ,
+                  "uplink" : "uplink2"           ,
+                  "vds_name": "wld-cluster-vds-01"
+                }
+              ]
+            }
+          },
+          {
+            "id": "a791ff12-6c0c-406c-98d2-5cc070711b2f",
+            "host_network_spec": {
+              "vm_nics": [
+                {
+                  "id"     : "vmnic0"            ,
+                  "uplink" : "uplink1"           ,
+                  "vds_name": "wld-cluster-vds-01"
+                },
+                {
+                  "id"     : "vmnic1"            ,
+                  "uplink" : "uplink2"           ,
+                  "vds_name": "wld-cluster-vds-01"
+                }
+              ]
+            }
+          },
+          {
+            "id": "aa1486f1-db45-4201-9d7e-2da180000f30",
+            "host_network_spec": {
+              "vm_nics": [
+                {
+                  "id"     : "vmnic0"            ,
+                  "uplink" : "uplink1"           ,
+                  "vds_name": "wld-cluster-vds-01"
+                },
+                {
+                  "id"     : "vmnic1"            ,
+                  "uplink" : "uplink2"           ,
+                  "vds_name": "wld-cluster-vds-01"
+                }
+              ]
+            }
+          }
+        ],
+        "cluster_image_id": ""
+      }
+    ]
+  },
+  "nsxt_spec": {
+    "nsxManager_admin_password": "XXXX",
+    "nsxManager_audit_password": "",
+    "vip": "10.0.0.66",
+    "vip_fqdn": "wld1-nsxt-vip.vrack.vsphere.local",
+    "nsx_manager_specs": [
+       {
+              "name": "wld1-nsxt-manager1",
+              "network_details_spec": {
+                  "ip_address": "10.0.0.62",
+                  "dns_name": "wld1-nsxt-manager1.vrack.vsphere.local",
+                  "gateway": "10.0.0.250",
+                  "subnet_mask": "255.255.255.0"
+              }
+          },
+          {
+              "name": "wld1-nsxt-manager2",
+              "network_details_spec": {
+                  "ip_address": "10.0.0.63",
+                  "dns_name": "wld1-nsxt-manager2.vrack.vsphere.local",
+                  "gateway": "10.0.0.250",
+                  "subnet_mask": "255.255.255.0"
+              }
+          },
+          {
+              "name": "wld1-nsxt-manager3",
+              "network_details_spec": {
+                  "ip_address": "10.0.0.64",
+                  "dns_name": "wld1-nsxt-manager3.vrack.vsphere.local",
+                  "gateway": "10.0.0.250",
+                  "subnet_mask": "255.255.255.0"
+              }
+          }
+    ],
+    "form_factor": "large"
+  },
+  "vcenter_spec": {
+    "name": "vcenter-wld1",
+    "root_password": "XXXX",
+    "datacenter_name": "wld1-datacenter",
+     "network_details_spec": {
+          "ip_address": "10.0.0.43",
+          "dns_name": "vcenter-wld1.vrack.vsphere.local",
+          "gateway": "10.0.0.250",
+          "subnet_mask": "255.255.255.0"
+      }
+  },
+  "deploy_without_license_keys": true,
+   "sso_domain_spec": {
+        "sso_domain_name": "sso-wld1.local",
+        "sso_domain_password": "VMware1!VMware1!"
+    }
+}

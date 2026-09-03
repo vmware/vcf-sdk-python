@@ -1,0 +1,28 @@
+{
+  "hosts_spec": [
+    {
+      "fqdn": "esxi-7.vrack.vsphere.local"
+    },
+    {
+      "fqdn": "esxi-8.vrack.vsphere.local"
+    },
+    {
+      "fqdn": "esxi-9.vrack.vsphere.local"
+    },
+    {
+      "fqdn": "esxi-10.vrack.vsphere.local"
+    },
+    {
+      "fqdn": "esxi-11.vrack.vsphere.local"
+    },
+    {
+      "fqdn": "esxi-12.vrack.vsphere.local"
+    },
+    {
+      "fqdn": "esxi-13.vrack.vsphere.local"
+    },
+    {
+      "fqdn": "esxi-14.vrack.vsphere.local"
+    }
+  ]
+}

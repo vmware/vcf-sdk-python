@@ -1,0 +1,17 @@
+{
+    "name": "FizzBuzz",
+    "description": "Description",
+    "adapterKindKey":  "VMWARE",
+    "resourceKindKey":  "VirtualMachine",
+    "identifiers":  {
+        "VMEntityVCID": "10ee147c-69a6-4e80-a9fe-0e7bf7e35996",
+        "VMEntityObjectID": "vm-111",
+        "VMEntityName": "FizzBuzz"
+    },
+    "statAndPropertyConfig": {
+        "statKey" : "test|test-123|bar1",
+        "propertyKey": "property|foo2|bar2",
+        "numberOfStatAndPropertyToPush": 10
+    },
+    "pushAdapterKindKey": "SOME-PUSH-ADAPTER-KEY"
+}

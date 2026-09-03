@@ -1,0 +1,27 @@
+{
+    "name": "My-Alert-Definition-1",
+    "description": "Alert for CPU demand exceeding 95% on VirtualMachine",
+    "adapterKindKey": "VMWARE",
+    "resourceKindKey": "VirtualMachine",
+    "type": 18,
+    "subType": 19,
+    "waitCycle": 1,
+    "cancelCycle": 1,
+    "severity": "CRITICAL",
+    "impactType": "BADGE",
+    "detail": "health",
+    "relation": "SELF",
+    "aggregation": "ALL",
+    "symptomDefinitionConfig": {
+        "name": "Symptom-Definition-1",
+        "adapterKindKey": "VMWARE",
+        "resourceKindKey": "VirtualMachine",
+        "waitCycle": 5,
+        "cancelCycle": 5,
+        "severity": "CRITICAL",
+        "key": "cpu|demandmhz",
+        "operator": "GT_EQ",
+        "value": "95",
+        "instance": false
+    }
+}

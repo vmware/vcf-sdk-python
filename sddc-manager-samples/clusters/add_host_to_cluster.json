@@ -1,0 +1,25 @@
+{
+  "cluster_expansion_spec": {
+    "host_specs": [
+      {
+        "id": "0847379b-d288-49bf-a4b3-7ed0bb4b2a33",
+        "host_network_spec": {
+          "vm_nics": [
+            {
+              "id": "vmnic0",
+              "vds_name": "SDDC-Dswitch-Private",
+              "uplink": "uplink1"
+            },
+            {
+              "id": "vmnic1",
+              "vds_name": "SDDC-Dswitch-Private",
+              "uplink": "uplink2"
+            }
+          ]
+        }
+      }
+    ],
+    "inter_rack_expansion": false,
+    "deploy_without_license_keys": true
+  }
+}
