@@ -30,7 +30,7 @@ This document describes the VMware Cloud Foundation Python SDK samples that use 
 All modules of the VCF SDK for Python are compatible and verified with the supported versions of Python at the time of their release.
 Once a Python version reaches EOL (End-Of-Life), it no longer receives security patches. VCF SDK releases which happen after this moment will not provide compatibility guarantees for the EOL-ed Python version. As a generally good practice and for best security posture, it is recommended to use the VCF SDK with an actively maintained version of Python and keeping your environment on the latest patch provided by the Python Software Foundation (PSF).
 
-For release 9.1.0.0, the compatible Python versions are [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/), [3.12](https://www.python.org/downloads/release/python-3120/) and [3.13](https://www.python.org/downloads/release/python-3130/) and [3.14](https://www.python.org/downloads/release/python-3142/).
+For release 9.1, the compatible Python versions are [3.10](https://www.python.org/downloads/release/python-3100/), [3.11](https://www.python.org/downloads/release/python-3110/), [3.12](https://www.python.org/downloads/release/python-3120/) and [3.13](https://www.python.org/downloads/release/python-3130/) and [3.14](https://www.python.org/downloads/release/python-3142/).
 
 ### VCF Component Compatibility
 The SDK is compatible with following VMware Cloud Foundation components
