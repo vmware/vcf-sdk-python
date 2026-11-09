@@ -7,7 +7,7 @@ lxml==6.1.1
 pycparser==3.0
 pyopenssl==26.2.0
 requests==2.34.2
-setuptools==82.0.1
+setuptools==84.1.0
 typing-extensions==4.15.0
 urllib3==2.7.0
 
