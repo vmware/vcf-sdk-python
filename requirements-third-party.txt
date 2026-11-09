@@ -9,5 +9,5 @@ pyopenssl==26.2.0
 requests==2.34.2
 setuptools==82.0.1
 typing-extensions==4.15.0
-urllib3==2.7.0
+urllib3==2.8.0
 
